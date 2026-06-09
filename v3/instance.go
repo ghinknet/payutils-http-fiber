@@ -1,9 +1,10 @@
 package httpfiber
 
 import (
-	"github.com/ghinknet/payutils/v3/errors"
-	"github.com/ghinknet/payutils/v3/model"
 	"github.com/gofiber/fiber/v3"
+
+	"go.gh.ink/payutils/v3/errors"
+	"go.gh.ink/payutils/v3/model"
 )
 
 type Instance struct {
@@ -13,15 +14,9 @@ type Instance struct {
 type Driver struct{}
 
 func (d Driver) NewInstance(instance any) (model.HttpInstance, error) {
-	adaptedInstance := Instance{}
-
-	// Assert type
-	switch instance.(type) {
-	case fiber.Router:
-		adaptedInstance.Router = instance.(fiber.Router)
-	default:
+	router, ok := instance.(fiber.Router)
+	if !ok {
 		return Instance{}, errors.ErrUnsupportedInstance
 	}
-
-	return adaptedInstance, nil
+	return Instance{Router: router}, nil
 }

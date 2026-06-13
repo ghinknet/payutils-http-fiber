@@ -30,14 +30,14 @@ import (
     "go.gh.ink/payutils/v3/model"
 
     httpFiber "go.gh.ink/payutils/http/fiber/v3"
-    _ "go.gh.ink/payutils-pay-alipay/v3"
+    _ "go.gh.ink/payutils/pay/alipay/v3"
 )
 
 app := fiber.New()
 
 c, err := client.NewClient(model.Config{
     Endpoint:    "https://api.example.com",
-    Instances:   map[string]any{httpFiber.Name: app}, // accepts fiber.Router
+    Instances:   model.I{httpFiber.Name: app}, // accepts fiber.Router
     Credentials: model.C{ /* ... */ },
     Contract:    myContract{},
 })
@@ -55,8 +55,7 @@ Anything implementing `fiber.Router` — `*fiber.App` and route groups
 ## Supported verbs
 
 `Get` · `Post` · `Put` · `Patch` · `Delete` · `Head` · `Options` · `Any`
-(`Any` maps to Fiber's `All`). payutils only uses `Post` for callbacks today;
-the full set is implemented for future use.
+(`Any` maps to Fiber's `All`). 
 
 ## License
 
